@@ -1,6 +1,8 @@
 import { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { getUrlOriginWithPath } from '~/utils';
-import styles from './_index.module.scss';
+import styles0 from './route.module.scss';
+import classNames from 'classnames';
+import { NavBarComp } from '../../../src/components/nav-bar/nav-bar';
 
 export const loader = ({ request }: LoaderFunctionArgs) => {
     return { canonicalUrl: getUrlOriginWithPath(request.url) };
@@ -8,12 +10,9 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 
 export default function HomePage() {
     return (
-        <div className={styles.root}>
-            <h2 className={styles.title}>Welcome To App Homepage 🎉</h2>
-            <span className={styles.paragraph}>
-                Drag here elements from the Add Elements Panel
-                <br /> and style them using the Styles panel
-            </span>
+        <div className={classNames(styles0.background)}>
+            <div className={styles0.div2} />
+            <NavBarComp />           
         </div>
     );
 }

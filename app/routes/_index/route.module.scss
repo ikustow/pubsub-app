@@ -1,0 +1,18 @@
+.background {
+    width: 100vw;
+    height: 100vh;
+}
+.div1 {
+    width: 80vw;
+    height: 20vh;
+    display: flex;
+    align-content: space-between;
+    justify-content: end;
+    overflow: visible;
+}
+.navBarComp {
+    flex-direction: row;
+}
+.div2 {
+    height: 90vh;
+}
