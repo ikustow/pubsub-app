@@ -2,23 +2,18 @@ import styles from './modal-form.module.scss';
 import cx from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import FocusTrap from 'focus-trap-react';
+import { handleSubmit } from '~/utils/api/handleSubmit';
 
 
 export interface ModalFormProps {
-    className?: string;
-    onClose: () => void;
+  className?: string;
+  onClose: () => void;
 }
 
-/**
- * This component was created using Codux's Default new component template.
- * To create custom component templates, see https://help.codux.com/kb/en/article/kb16522
- */
 export const ModalForm = ({ className, onClose }: ModalFormProps) => {
   const [reason, setReason] = useState('');
   const [selectedDate, setSelectedDate] = useState<'today' | 'tomorrow'>('today');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -37,62 +32,6 @@ export const ModalForm = ({ className, onClose }: ModalFormProps) => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [onClose]);
-
-  const handleSubmit = async () => {
-    if (!reason.trim()) {
-      alert('Пожалуйста, введите причину.');
-      return;
-    }
-    if (!selectedDate) {
-      alert('Пожалуйста, выберите дату.');
-      return;
-    }
-    // Обработка отправки данных
-    console.log('Reason:', reason);
-    console.log('Selected Date:', selectedDate);
-
- /*   const messageData = {
-      reason: reason,           // Убедимся, что reason обработан
-      selectedDate: selectedDate,      // Значение выбранной даты
-      timestamp: selectedDate,
-    };
-*/
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Access-Control-Allow-Origin", "*/*");
-    myHeaders.append("Accept", "*/*");
-
-
-    const messageData = {
-      "reason": "Hello World",
-      "selectedDate": "today",
-      "timestamp": "Hello World",
-    };
-
-    const raw = JSON.stringify(messageData);
-
-
-    try {
-      console.log(JSON.stringify(messageData));
-      const response = await fetch('https://us-central1-ff-vacation-manager-g8xdvb.cloudfunctions.net/pubsub-submit', { // Замените на URL функции
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow"
-      });
-
-      if (response.ok) {
-        alert('Заявка успешно отправлена.');
-      } else {
-        alert('Ошибка отправки заявки.');
-      }
-    } catch (error) {
-      console.error('Error sending request:', error);
-      alert('Ошибка отправки заявки.');
-    }
-    onClose();
-  };
 
   return (
     <FocusTrap>
@@ -144,7 +83,10 @@ export const ModalForm = ({ className, onClose }: ModalFormProps) => {
               <option value="tomorrow">Завтра</option>
             </select>
           </div>
-          <button className={styles.submitButton} onClick={handleSubmit}>
+          <button
+            className={styles.submitButton}
+            onClick={() => handleSubmit(reason, selectedDate, onClose)}
+          >
             Отправить заявку
           </button>
         </div>
