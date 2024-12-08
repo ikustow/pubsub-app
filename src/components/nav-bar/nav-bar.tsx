@@ -42,6 +42,7 @@ export const NavBarComp = ({ className }: NavBarProps) => {
     return (
         <>
             <nav className={cx(styles.root, className, styles.nav1)}>
+                <a href="/">Home</a>
                 <div className={cx(styles.navLinks, { [styles.active]: isMenuOpen })}>
                     <button
                         className={cx(styles.openModalButton, styles.button1)}
@@ -51,6 +52,7 @@ export const NavBarComp = ({ className }: NavBarProps) => {
                         +
                     </button>
                 </div>
+                <a href="/Settings">Settings</a>
             </nav>
             {isModalOpen && <ModalForm onClose={closeModal} />}
         </>

@@ -18,10 +18,15 @@ export const handleSubmit = async (
   myHeaders.append("Access-Control-Allow-Origin", "*/*");
   myHeaders.append("Accept", "*/*");
 
+  const sourceUsername = null; // или undefined, или ''
+  const username = sourceUsername || 'ikustow';
+
+
   const messageData = {
     reason: reason,
+    username: username,
     selectedDate: selectedDate,
-    timestamp: selectedDate,
+    status: "new",
   };
 
   const raw = JSON.stringify(messageData);
@@ -39,13 +44,13 @@ export const handleSubmit = async (
     );
 
     if (response.ok) {
-      alert('Заявка успешно отправлена.');
+      alert('Successfully sent.');
     } else {
-      alert('Ошибка отправки заявки.');
+      alert('Error sending request');
     }
   } catch (error) {
     console.error('Error sending request:', error);
-    alert('Ошибка отправки заявки.');
+    alert('Error sending request');
   }
 
   onClose();

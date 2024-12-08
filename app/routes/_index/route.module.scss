@@ -16,3 +16,82 @@
 .div2 {
     height: 90vh;
 }
+.tableContainer {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Ограничение ширины таблицы */
+    margin: 20px auto; /* Центрирование таблицы */
+    overflow-x: auto; /* Горизонтальная прокрутка для маленьких экранов */
+    background-color: #fff;
+    border-radius: 8px; /* Закруглённые углы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+    z-index: 1000;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Убираем зазоры между ячейками */
+}
+
+.th-head {
+    background-color: #f4f4f4; /* Цвет фона заголовков */
+    color: #333; /* Цвет текста */
+    font-weight: bold; /* Жирный текст */
+    text-align: left;
+    padding: 12px; /* Внутренний отступ */
+    border-bottom: 2px solid #ddd; /* Разделительная линия */
+}
+
+.tr1 th {
+    text-transform: uppercase; /* Заглавные буквы в заголовке */
+    font-size: 0.9rem; /* Уменьшенный размер шрифта */
+}
+
+td {
+    padding: 12px; /* Внутренний отступ для ячеек */
+    border-bottom: 1px solid #eee; /* Линия между строками */
+    color: #555; /* Цвет текста */
+    font-size: 0.95rem;
+    white-space: nowrap; /* Запрет на перенос текста */
+    text-overflow: ellipsis; /* Троеточие для длинного текста */
+    overflow: hidden; /* Скрыть текст за пределами ячейки */
+}
+
+td:nth-child(3) {
+    white-space: normal; /* Разрешить перенос текста для "Reason" */
+    word-wrap: break-word; /* Перенос длинных слов */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Светлый фон для чётных строк */
+}
+
+tr:hover {
+    background-color: #f1f1f1; /* Подсветка строки при наведении */
+    cursor: pointer; /* Курсор указателя */
+}
+
+.status {
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 4px; /* Закруглённые углы для визуальной красоты */
+}
+
+.status-new {
+    background-color: #d0ebff; /* Светло-синий фон */
+    color: #0056b3; /* Тёмно-синий текст */
+}
+
+.status-approved {
+    background-color: #d4edda; /* Светло-зелёный фон */
+    color: #155724; /* Тёмно-зелёный текст */
+}
+
+.status-canceled {
+    background-color: #f8d7da; /* Светло-красный фон */
+    color: #721c24; /* Тёмно-красный текст */
+}
+.header1 {
+    text-align: center;
+}

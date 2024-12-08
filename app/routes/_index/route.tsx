@@ -4,7 +4,7 @@ import styles0 from './route.module.scss';
 import classNames from 'classnames';
 import { NavBarComp } from '~/components/nav-bar/nav-bar';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, onSnapshot } from '@firebase/firestore';
+import { collection, onSnapshot, query, where } from '@firebase/firestore';
 import { db } from '~/credentials/firebase-config';
 
 export const loader = ({ request }: LoaderFunctionArgs) => {
@@ -12,63 +12,99 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function HomePage() {
-    const [data, setData] = useState<any[]>([]); // Состояние для хранения данных
+    const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-
+    const username = 'ikustow';
     useEffect(() => {
-        // Слушатель изменений в коллекции 'dayoffs'
+        const q = query(collection(db, 'dayoffs'), where('username', '==', username));
+
         const unsubscribe = onSnapshot(
-          collection(db, 'dayoffs'),
-          (snapshot) => {
-              const tableData = snapshot.docs.map((doc) => ({
-                  id: doc.id,
-                  ...doc.data(),
-              }));
-              setData(tableData); // Обновляем состояние с новыми данными
-              setLoading(false);
-          },
-          (error) => {
-              console.error('Ошибка при чтении данных:', error);
-              setLoading(false);
-          }
+            q,
+            (snapshot) => {
+                const filteredData = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setData(filteredData);
+                setLoading(false);
+            },
+            (error) => {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
         );
 
-        // Отписываемся от слушателя при размонтировании компонента
         return () => unsubscribe();
-    }, []);
+    }, [username]); // Обновляйте запрос, если `username` меняется
+
+    const formatId = (id: string) => {
+        if (id.length > 4) {
+            return `${id.slice(0, 2)}...${id.slice(-2)}`;
+        }
+        return id;
+    };
+
+    const getStatusClass = (status: string) => {
+        switch (status.toLowerCase()) {
+            case 'new':
+                return styles0['status-new'];
+            case 'approved':
+                return styles0['status-approved'];
+            case 'canceled':
+                return styles0['status-canceled'];
+            default:
+                return '';
+        }
+    };
 
     return (
         <div className={classNames(styles0.background)}>
             <div className={styles0.div2} />
-
-            {/* Таблица данных */}
-            <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
+            <div
+                style={{
+                    position: 'absolute',
+                    top: '10px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 1000,
+                }}
+            >
+                <h1 className={styles0.header1}>Your Requests</h1>
                 {loading ? (
-                  <p>Загрузка данных...</p>
+                    <p>Loading...</p>
                 ) : (
-                  <table style={{ backgroundColor: 'white', margin: '20px auto' }}>
-                      <thead>
-                      <tr>
-                          <th>ID</th>
-                          <th>Field 1</th>
-                          <th>Field 2</th>
-                          {/* Добавьте другие поля, если нужно */}
-                      </tr>
-                      </thead>
-                      <tbody>
-                      {data.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.id}</td>
-                            {/* Замените field1 и field2 на реальные имена полей */}
-                        </tr>
-                      ))}
-                      </tbody>
-                  </table>
+                    <div className={styles0.tableContainer}>
+                        <table className={styles0.table}>
+                            <thead>
+                                <tr className={styles0.tr1}>
+                                    <th className={styles0['th-head']}>ID</th>
+                                    <th className={styles0['th-head']}>username</th>
+                                    <th className={styles0['th-head']}>Reason</th>
+                                    <th className={styles0['th-head']}>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.map((item) => (
+                                    <tr key={item.id}>
+                                        <td>{formatId(item.id)}</td>
+                                        <td>{item.username || 'N/A'}</td>
+                                        <td>{item.reason || 'N/A'}</td>
+                                        <td
+                                            className={classNames(
+                                                styles0.status,
+                                                getStatusClass(item.status || '')
+                                            )}
+                                        >
+                                            {item.status || 'N/A'}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
-
-
-            <NavBarComp />           
+            <NavBarComp />
         </div>
     );
 }

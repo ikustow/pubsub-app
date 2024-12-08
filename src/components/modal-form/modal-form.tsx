@@ -45,23 +45,23 @@ export const ModalForm = ({ className, onClose }: ModalFormProps) => {
           <button
             className={styles.closeButton}
             onClick={onClose}
-            aria-label="Закрыть модальное окно"
+            aria-label="Close"
           >
             ×
           </button>
           <h2 id="modal-title" className={styles.title}>
-            Отправить заявку
+            Send Request
           </h2>
           <div className={styles.formGroup}>
             <label htmlFor="reason" className={styles.label}>
-              Причина:
+              Reason:
             </label>
             <textarea
               id="reason"
               ref={textareaRef}
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="Введите причину..."
+              placeholder="Type here..."
               className={styles.textarea}
               required
               aria-required="true"
@@ -69,7 +69,7 @@ export const ModalForm = ({ className, onClose }: ModalFormProps) => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="dateSelect" className={styles.label}>
-              Выберите дату:
+              Choose date:
             </label>
             <select
               id="dateSelect"
@@ -79,15 +79,15 @@ export const ModalForm = ({ className, onClose }: ModalFormProps) => {
               required
               aria-required="true"
             >
-              <option value="today">Сегодня</option>
-              <option value="tomorrow">Завтра</option>
+              <option value="today">Today</option>
+              <option value="tomorrow">Tomorrow</option>
             </select>
           </div>
           <button
             className={styles.submitButton}
             onClick={() => handleSubmit(reason, selectedDate, onClose)}
           >
-            Отправить заявку
+            Send
           </button>
         </div>
         <div
