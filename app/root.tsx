@@ -14,6 +14,7 @@ import {
     useRouteError,
 } from '@remix-run/react';
 import { ErrorComponent } from '~/components/error-component/error-component';
+import { UserProvider } from './helpers/UserContext';
 
 export function Layout({ children }: { children: React.ReactNode }) {
     return (
@@ -36,7 +37,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
     return (
         <div id="root">
-            <Outlet />
+            <UserProvider>
+                <Outlet />
+            </UserProvider>
+
         </div>
     );
 }
